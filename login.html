@@ -1,0 +1,2923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna Swastha - Comprehensive Healthcare System</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                linear-gradient(135deg, rgba(26,115,232,0.65) 0%, rgba(108,28,232,0.65) 100%),
+                url('assets/background.jpg') center/cover fixed no-repeat;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        #app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-form h1 {
+            color: #1a73e8;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+        }
+
+        .login-form p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1a73e8 0%, #6c1ce8 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            color: #1a73e8;
+            font-size: 1.3rem;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            display: block;
+            font-weight: bold;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Sidebar Styles */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #555;
+            transition: background 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #f8f9fa;
+            border-left-color: #1a73e8;
+            color: #1a73e8;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.sidebar-open {
+            margin-left: 300px;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .dashboard-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-left: 4px solid #1a73e8;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-info h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .content-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        /* Worker Dashboard Styles */
+        .worker-dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .worker-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .worker-card h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .worker-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-group {
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .health-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-healthy {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-critical {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+
+        .data-table th {
+            background: #1a73e8;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Forms */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d62d9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        /* Quick Action Cards */
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* QR Code */
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content.sidebar-open {
+                margin-left: 0;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .worker-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Global Language Selector -->
+        <div style="position:fixed; bottom:10px; right:12px; z-index:2000; background:#ffffffcc; backdrop-filter: blur(4px); border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; display:flex; align-items:center; gap:8px;">
+            <span id="i18n-lang-label" style="font-size:12px; color:#475569;">Language</span>
+            <select id="langSelect" aria-label="Language" style="border:1px solid #cbd5e1; border-radius:6px; padding:6px 8px;">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी</option>
+                <option value="mr">मराठी</option>
+                <option value="bn">বাংলা</option>
+                <option value="ml">മലയാളം</option>
+            </select>
+        </div>
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-form">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:6px;">
+                    <img src="assets/logo.png" alt="Apna Swastha Logo" style="width:90px; height:90px; object-fit:contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); border-radius: 50%; border: 3px solid #1a73e8; padding: 8px; background: linear-gradient(135deg, #1a73e8, #6c1ce8);"/>
+                    <h1 id="i18n-app-name">Apna Swastha</h1>
+                </div>
+                <p id="i18n-app-tag">Comprehensive Healthcare System</p>
+                
+                <div class="form-group">
+                    <label for="username" id="i18n-username-label">Username / ID</label>
+                    <input type="text" id="username" placeholder="Enter your username or ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" id="i18n-password-label">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="role" id="i18n-loginas-label">Login as</label>
+                    <select id="role">
+                        <option value="worker" id="i18n-role-worker">Worker</option>
+                        <option value="admin" id="i18n-role-admin">Doctor</option>
+                        <option value="government" id="i18n-role-govt">Government Official</option>
+                        <option value="medical" id="i18n-role-med">Medical</option>
+                    </select>
+                </div>
+                
+                <button class="login-btn" onclick="login()" id="i18n-login-btn">Login to System</button>
+                
+                
+            </div>
+        </div>
+
+        <!-- Worker Application -->
+        <div id="workerApp" style="display: none;">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="menu-btn" onclick="toggleSidebar('worker')">☰</button>
+                    <div class="logo" style="gap:0.75rem;">
+                        <img src="assets/logo.png" alt="Logo" style="width:28px; height:28px; object-fit:contain; border-radius: 50%; border: 2px solid #1a73e8; padding: 2px; background: linear-gradient(135deg, #1a73e8, #6c1ce8);"/>
+                        <span>Apna Swastha - Worker Portal</span>
+                    </div>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="user-info">
+                        <span class="user-name" id="workerUserName">Welcome, Worker</span>
+                        <span class="user-role">Worker</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Worker Navigation</h3>
+                    <button class="close-btn" onclick="toggleSidebar('worker')">×</button>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showWorkerPage('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showWorkerPage('medical')">
+                        <span class="nav-icon">💊</span>
+                        <span class="nav-label">Medical History</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showWorkerPage('schemes')">
+                        <span class="nav-icon">🏛️</span>
+                        <span class="nav-label">Government Schemes</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content" id="workerContent">
+                <!-- Worker Dashboard -->
+                <div id="workerDashboardPage" class="page-content">
+                    <div class="dashboard-header">
+                        <h1>Worker Health Dashboard</h1>
+                        <p>Your personal health information and records</p>
+                    </div>
+
+                    <div class="worker-dashboard">
+                        <div class="worker-card">
+                            <h2>Personal Information</h2>
+                            <div class="worker-info-grid" id="workerPersonalInfo">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="worker-card">
+                            <h2>Health Information</h2>
+                            <div class="worker-info-grid" id="workerHealthInfo">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="worker-card">
+                            <h2>Recent Medical Activity</h2>
+                            <div id="workerMedicalActivity">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="worker-card">
+                            <h2>Nearby Hospitals</h2>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hospital Name</th>
+                                        <th>Distance</th>
+                                        <th>Contact</th>
+                                        <th>Speciality</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>City General Hospital</td>
+                                        <td>2.5 km</td>
+                                        <td>011-23456789</td>
+                                        <td>Multi-speciality</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Community Health Center</td>
+                                        <td>1.2 km</td>
+                                        <td>011-23456790</td>
+                                        <td>Primary Care</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apollo Clinic</td>
+                                        <td>3.8 km</td>
+                                        <td>011-23456791</td>
+                                        <td>Speciality Care</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Worker Medical History Page -->
+                <div id="workerMedicalPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Medical History</h1>
+                        <p>Your complete medical records</p>
+                    </div>
+
+                    <div class="worker-dashboard">
+                        <div class="worker-card">
+                            <h2>Medical History</h2>
+                            <div id="workerMedicalHistory">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="worker-card">
+                            <h2>Prescriptions</h2>
+                            <div id="workerPrescriptions">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="worker-card">
+                            <h2>Vaccination Records</h2>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Vaccine Name</th>
+                                        <th>Date</th>
+                                        <th>Dose</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workerVaccinationTable">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Worker Government Schemes Page -->
+                <div id="workerSchemesPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Government Schemes</h1>
+                        <p>Beneficial schemes for your health and welfare</p>
+                    </div>
+
+                    <div class="worker-dashboard">
+                        <div class="worker-card">
+                            <h2>Available Schemes</h2>
+                            <div id="workerSchemes">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin (Doctor) Application -->
+        <div id="adminApp" style="display: none;">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="menu-btn" onclick="toggleSidebar('admin')">☰</button>
+                    <div class="logo" style="gap:0.75rem;">
+                        <img src="assets/logo.png" alt="Logo" style="width:28px; height:28px; object-fit:contain; border-radius: 50%; border: 2px solid #1a73e8; padding: 2px; background: linear-gradient(135deg, #1a73e8, #6c1ce8);"/>
+                        <span>Apna Swasta - Doctor Portal</span>
+                    </div>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="user-info">
+                        <span class="user-name" id="adminUserName">Welcome, Doctor</span>
+                        <span class="user-role">Admin (Doctor)</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Doctor Navigation</h3>
+                    <button class="close-btn" onclick="toggleSidebar('admin')">×</button>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showAdminPage('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showAdminPage('register')">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-label">Register Patient</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showAdminPage('patients')">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Patient Records</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showAdminPage('prescriptions')">
+                        <span class="nav-icon">💊</span>
+                        <span class="nav-label">Prescriptions</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content" id="adminContent">
+                <!-- Admin Dashboard -->
+                <div id="adminDashboardPage" class="page-content">
+                    <div class="dashboard-header">
+                        <h1>Doctor Dashboard</h1>
+                        <p>Manage patient health records and prescriptions</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3 data-i18n="total_patients">Total Patients</h3>
+                                    <p class="stat-value" id="totalPatients">0</p>
+                                </div>
+                                <div class="stat-icon">👥</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3 data-i18n="todays_appointments">Today's Appointments</h3>
+                                    <p class="stat-value" id="todaysAppointments">0</p>
+                                </div>
+                                <div class="stat-icon">📅</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3 data-i18n="pending_prescriptions">Pending Prescriptions</h3>
+                                    <p class="stat-value" id="pendingPrescriptions">0</p>
+                                </div>
+                                <div class="stat-icon">💊</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3 data-i18n="critical_cases">Critical Cases</h3>
+                                    <p class="stat-value" id="criticalCases">0</p>
+                                </div>
+                                <div class="stat-icon">🦠</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="content-card">
+                            <h3>Recent Patients</h3>
+                            <div id="recentPatientsList">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <h3 data-i18n="quick_actions">Quick Actions</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div class="quick-action-card" onclick="showAdminPage('register')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
+                                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;" data-i18n="register_patient">Register New Patient</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Add new patient to system</p>
+                                </div>
+                                <div class="quick-action-card" onclick="showAdminPage('prescriptions')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 1.5rem; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💊</div>
+                                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;" data-i18n="create_prescription">Create Prescription</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Issue new prescription</p>
+                                </div>
+                                <div class="quick-action-card" onclick="showAdminPage('patients')" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+                                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;" data-i18n="view_patients">View All Patients</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Browse patient records</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Register Patient Page -->
+                <div id="adminRegisterPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Register New Patient</h1>
+                        <p>Add a new patient to the healthcare system</p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="patientRegistrationForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="patientName">Full Name *</label>
+                                    <input type="text" id="patientName" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientAge">Age *</label>
+                                    <input type="number" id="patientAge" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientGender">Gender *</label>
+                                    <select id="patientGender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientContact">Contact Number *</label>
+                                    <input type="tel" id="patientContact" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientAddress">Address</label>
+                                    <textarea id="patientAddress" rows="2"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientEmergency">Emergency Contact</label>
+                                    <input type="tel" id="patientEmergency">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientHeight">Height (cm)</label>
+                                    <input type="number" id="patientHeight">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientWeight">Weight (kg)</label>
+                                    <input type="number" id="patientWeight">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientBlood">Blood Group</label>
+                                    <select id="patientBlood">
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientAllergies">Known Allergies</label>
+                                    <input type="text" id="patientAllergies">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientConditions">Chronic Conditions</label>
+                                    <input type="text" id="patientConditions">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientInherited">Inherited Diseases</label>
+                                    <input type="text" id="patientInherited">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientPreviousTreatments">Previous Treatments</label>
+                                    <textarea id="patientPreviousTreatments" rows="2" placeholder="List any previous medical treatments..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientVaccinationCount">Vaccination Count</label>
+                                    <input type="number" id="patientVaccinationCount" min="0" value="0">
+                                </div>
+                            </div>
+
+                            <!-- Optional: Capture face photo via webcam -->
+                            <div style="margin: 12px 0; border:1px solid #eee; border-radius:10px; padding:12px;">
+                                <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+                                    <div style="flex:1 1 300px;">
+                                        <video id="adminCam" autoplay playsinline style="width:100%; max-width:360px; border:1px solid #e2e8f0; border-radius:8px; background:#000"></video>
+                                    </div>
+                                    <div style="flex:1 1 240px;">
+                                        <img id="adminFacePreview" alt="Preview" style="width:100%; max-width:220px; border:1px solid #e2e8f0; border-radius:8px; background:#f8fafc" />
+                                    </div>
+                                </div>
+                                <div style="margin-top:8px; display:flex; gap:8px;">
+                                    <button type="button" class="btn btn-primary" id="adminStartCam">Start Camera</button>
+                                    <button type="button" class="btn btn-primary" id="adminCapture">Capture</button>
+                                    <button type="button" class="btn btn-secondary" id="adminStopCam">Stop</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">Register Patient</button>
+                            </div>
+                        </form>
+
+                        <div id="adminRegResult" style="display:none; margin-top:12px;">
+                            <div style="font-weight:600; margin-bottom:6px;">Patient Registered</div>
+                            <div id="adminRegMsg" style="margin-bottom:8px;"></div>
+                            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+                                <img id="adminRegQr" alt="QR" style="width:200px; border:1px solid #e2e8f0; border-radius:8px;" />
+                                <img id="adminRegFace" alt="Face" style="width:200px; border:1px solid #e2e8f0; border-radius:8px;" onerror="this.style.display='none'" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Patient Records Page -->
+                <div id="adminPatientsPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Patient Records</h1>
+                        <p>View and manage patient health records</p>
+                    </div>
+
+                    <div class="content-card">
+                        <div style="display: flex; margin-bottom: 1.5rem; gap: 1rem;">
+                            <input type="text" class="search-input" id="searchPatients" placeholder="Search by name or ID...">
+                            <button class="btn btn-primary" onclick="searchPatients()">Search</button>
+                        </div>
+
+                        <table class="data-table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Patient ID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Last Visit</th>
+                                    <th>Health Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Admin Prescriptions Page -->
+                <div id="adminPrescriptionsPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Prescription Management</h1>
+                        <p>Create and manage patient prescriptions</p>
+                    </div>
+
+                    <div class="form-container">
+                        <h3>Create New Prescription</h3>
+                        <form id="prescriptionForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="prescriptionPatient">Select Patient *</label>
+                                    <select id="prescriptionPatient" required>
+                                        <option value="">Select Patient</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="prescriptionDate">Date *</label>
+                                    <input type="date" id="prescriptionDate" required>
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label for="prescriptionDiagnosis">Diagnosis *</label>
+                                    <textarea id="prescriptionDiagnosis" rows="2" required></textarea>
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label for="prescriptionMedicines">Medicines *</label>
+                                    <textarea id="prescriptionMedicines" rows="4" required placeholder="Medicine name, dosage, frequency..."></textarea>
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label for="prescriptionInstructions">Instructions</label>
+                                    <textarea id="prescriptionInstructions" rows="3" placeholder="Additional instructions for the patient..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="prescriptionFollowup">Follow-up Date</label>
+                                    <input type="date" id="prescriptionFollowup">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="prescriptionDoctor">Doctor Name *</label>
+                                    <input type="text" id="prescriptionDoctor" required>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">Create Prescription</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Government Official Application -->
+        <div id="governmentApp" style="display: none;">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="menu-btn" onclick="toggleSidebar('government')">☰</button>
+                    <div class="logo" style="gap:0.75rem;">
+                        <img src="assets/logo.png" alt="Logo" style="width:28px; height:28px; object-fit:contain; border-radius: 50%; border: 2px solid #1a73e8; padding: 2px; background: linear-gradient(135deg, #1a73e8, #6c1ce8);"/>
+                        <span>Apna Swasta - Government Portal</span>
+                    </div>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="user-info">
+                        <span class="user-name" id="governmentUserName">Welcome</span>
+                        <span class="user-role">Government Official</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Government Navigation</h3>
+                    <button class="close-btn" onclick="toggleSidebar('government')">×</button>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showGovernmentPage('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content" id="governmentContent">
+                <!-- Government Dashboard -->
+                <div id="governmentDashboardPage" class="page-content">
+                    <div class="dashboard-header">
+                        <h1>Government Dashboard</h1>
+                        <p>No data available.</p>
+                    </div>
+                    <div class="content-card" style="text-align:center;">
+                        <p style="margin:1rem 0; color:#475569;">Government portal is currently blank by request.</p>
+                    </div>
+                </div>
+                <!-- Other government pages removed per request -->
+            </div>
+        </div>
+
+        <!-- Medical Application -->
+        <div id="medicalApp" style="display: none;">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="menu-btn" onclick="toggleSidebar('medical')">☰</button>
+                    <div class="logo" style="gap:0.75rem;">
+                        <img src="assets/logo.png" alt="Logo" style="width:28px; height:28px; object-fit:contain; border-radius: 50%; border: 2px solid #1a73e8; padding: 2px; background: linear-gradient(135deg, #1a73e8, #6c1ce8);"/>
+                        <span>Apna Swasta - Medical Portal</span>
+                    </div>
+                </div>
+                
+                <div class="navbar-right">
+                    <div class="user-info">
+                        <span class="user-name" id="medicalUserName">Welcome, Medical Staff</span>
+                        <span class="user-role">Medical</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Medical Navigation</h3>
+                    <button class="close-btn" onclick="toggleSidebar('medical')">×</button>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showMedicalPage('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showMedicalPage('stock')">
+                        <span class="nav-icon">💊</span>
+                        <span class="nav-label">Medicine Stock</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showMedicalPage('prescriptions')">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Prescriptions</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showMedicalPage('patients')">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-label">Patient Records</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content" id="medicalContent">
+                <!-- Medical Dashboard -->
+                <div id="medicalDashboardPage" class="page-content">
+                    <div class="dashboard-header">
+                        <h1>Medical Dashboard</h1>
+                        <p>Medicine stock management and patient prescriptions</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3>Total Medicines</h3>
+                                    <p class="stat-value" id="totalMedicines">0</p>
+                                </div>
+                                <div class="stat-icon">💊</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3>Expired Medicines</h3>
+                                    <p class="stat-value" id="expiredMedicines">0</p>
+                                </div>
+                                <div class="stat-icon">⚠️</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3>Pending Prescriptions</h3>
+                                    <p class="stat-value" id="medicalPendingPrescriptions">0</p>
+                                </div>
+                                <div class="stat-icon">📋</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <h3>New Prescriptions (24h)</h3>
+                                    <p class="stat-value" id="newPrescriptionsCount">0</p>
+                                </div>
+                                <div class="stat-icon">🆕</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="worker-card" style="margin-top: 2rem;">
+                        <h2>New Prescriptions (Last 24 Hours)</h2>
+                        <div id="newPrescriptionsList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="content-card">
+                            <h3>Recent Prescriptions</h3>
+                            <div id="recentPrescriptions">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <h3>Stock Alerts</h3>
+                            <div id="stockAlerts">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Stock Page -->
+                <div id="medicalStockPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Medicine Stock Management</h1>
+                        <p>Manage medicine inventory and stock levels</p>
+                    </div>
+
+                    <div class="content-card">
+                        <h3>Medicine Inventory</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Category</th>
+                                    <th>Current Stock</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="medicineStockTable">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Medical Prescriptions Page -->
+                <div id="medicalPrescriptionsPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Prescription Management</h1>
+                        <p>View and process doctor prescriptions</p>
+                    </div>
+
+                    <div class="content-card">
+                        <h3>Doctor Prescriptions</h3>
+                        <div id="doctorPrescriptions">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Patients Page -->
+                <div id="medicalPatientsPage" class="page-content" style="display: none;">
+                    <div class="dashboard-header">
+                        <h1>Patient Records</h1>
+                        <p>Access patient information and QR codes</p>
+                    </div>
+
+                    <div class="content-card">
+                        <h3>Patient Search</h3>
+                        <div style="display: flex; margin-bottom: 1.5rem; gap: 1rem;">
+                            <input type="text" class="search-input" id="searchMedicalPatients" placeholder="Search by name or ID...">
+                            <button class="btn btn-primary" onclick="searchMedicalPatients()">Search</button>
+                        </div>
+
+                        <div id="patientQRCode">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient View/Edit Modal -->
+    <div id="patientModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:3000; align-items:center; justify-content:center;">
+        <div style="background:#fff; width:95%; max-width:900px; max-height:90vh; overflow:auto; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3);">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #eee;">
+                <h3 id="patientModalTitle" style="margin:0;">Patient</h3>
+                <button onclick="closePatientModal()" style="background:none; border:none; font-size:20px; cursor:pointer;">×</button>
+            </div>
+            <div style="padding:16px;">
+                <div id="patientViewSection">
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+                        <img id="patientViewQr" alt="QR" style="width:200px; border:1px solid #e2e8f0; border-radius:8px;"/>
+                        <img id="patientViewFace" alt="Face" style="width:200px; border:1px solid #e2e8f0; border-radius:8px;" onerror="this.style.display='none'"/>
+                        <div id="patientViewDetails" style="min-width:260px; font-size:14px;"></div>
+                    </div>
+                </div>
+                <form id="patientEditForm" style="display:none; margin-top:12px;">
+                    <div class="form-grid">
+                        <div class="form-group"><label>Full Name</label><input id="editFullName"></div>
+                        <div class="form-group"><label>Age</label><input id="editAge" type="number" min="0"></div>
+                        <div class="form-group"><label>Gender</label><select id="editGender"><option>Male</option><option>Female</option><option>Other</option></select></div>
+                        <div class="form-group"><label>Phone</label><input id="editPhone"></div>
+                        <div class="form-group"><label>Address</label><input id="editAddress"></div>
+                        <div class="form-group"><label>Origin (State)</label><input id="editNative"></div>
+                        <div class="form-group"><label>Blood Group</label><input id="editBlood"></div>
+                        <div class="form-group"><label>Marital Status</label><input id="editMarital"></div>
+                        <div class="form-group"><label>Language</label><input id="editLanguage"></div>
+                        <div class="form-group"><label>Financial Status</label><input id="editFinancial"></div>
+                    </div>
+                    <div class="form-actions"><button type="button" class="btn btn-secondary" onclick="closePatientModal()">Close</button><button type="submit" class="btn btn-primary">Save</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple i18n dictionary (extend as needed)
+        const I18N = {
+            en: {
+                app_name: 'Apna Swasta',
+                app_tag: 'Comprehensive Healthcare System',
+                language: 'Language',
+                username: 'Username / ID',
+                password: 'Password',
+                login_as: 'Login as',
+                worker: 'Worker',
+                admin: 'Doctor',
+                govt: 'Government Official',
+                medical: 'Medical',
+                login_btn: 'Login to System',
+                // Dashboard translations
+                dashboard: 'Dashboard',
+                total_patients: 'Total Patients',
+                todays_appointments: 'Today\'s Appointments',
+                pending_prescriptions: 'Pending Prescriptions',
+                critical_cases: 'Critical Cases',
+                recent_patients: 'Recent Patients',
+                quick_actions: 'Quick Actions',
+                register_patient: 'Register New Patient',
+                create_prescription: 'Create Prescription',
+                view_patients: 'View All Patients',
+                patient_records: 'Patient Records',
+                prescriptions: 'Prescriptions',
+                personal_info: 'Personal Information',
+                health_info: 'Health Information',
+                medical_history: 'Medical History',
+                government_schemes: 'Government Schemes',
+                medicine_stock: 'Medicine Stock',
+                logout: 'Logout'
+            },
+            hi: {
+                app_name: 'अपना स्वास्थ्य',
+                app_tag: 'व्यापक स्वास्थ्य प्रणाली',
+                language: 'भाषा',
+                username: 'उपयोगकर्ता नाम / आईडी',
+                password: 'पासवर्ड',
+                login_as: 'भूमिका चुनें',
+                worker: 'मज़दूर',
+                admin: 'डॉक्टर',
+                govt: 'सरकारी अधिकारी',
+                medical: 'मेडिकल',
+                login_btn: 'लॉगिन',
+                dashboard: 'डैशबोर्ड',
+                total_patients: 'कुल रोगी',
+                todays_appointments: 'आज की अपॉइंटमेंट',
+                pending_prescriptions: 'लंबित नुस्खे',
+                critical_cases: 'गंभीर मामले',
+                recent_patients: 'हाल के रोगी',
+                quick_actions: 'त्वरित कार्य',
+                register_patient: 'नया रोगी पंजीकृत करें',
+                create_prescription: 'नुस्खा बनाएं',
+                view_patients: 'सभी रोगी देखें',
+                patient_records: 'रोगी रिकॉर्ड',
+                prescriptions: 'नुस्खे',
+                personal_info: 'व्यक्तिगत जानकारी',
+                health_info: 'स्वास्थ्य जानकारी',
+                medical_history: 'चिकित्सा इतिहास',
+                government_schemes: 'सरकारी योजनाएं',
+                medicine_stock: 'दवा स्टॉक',
+                logout: 'लॉगआउट'
+            },
+            mr: {
+                app_name: 'आपला स्वास्थ्य',
+                app_tag: 'समग्र आरोग्य प्रणाली',
+                language: 'भाषा',
+                username: 'वापरकर्ता नाव / आयडी',
+                password: 'पासवर्ड',
+                login_as: 'भूमिका निवडा',
+                worker: 'कामगार',
+                admin: 'डॉक्टर',
+                govt: 'शासकीय अधिकारी',
+                medical: 'मेडिकल',
+                login_btn: 'लॉगिन',
+                dashboard: 'डॅशबोर्ड',
+                total_patients: 'एकूण रुग्ण',
+                todays_appointments: 'आजचे अपॉइंटमेंट',
+                pending_prescriptions: 'प्रलंबित नुस्खे',
+                critical_cases: 'गंभीर प्रकरणे',
+                recent_patients: 'अलीकडील रुग्ण',
+                quick_actions: 'द्रुत क्रिया',
+                register_patient: 'नवीन रुग्ण नोंदणी करा',
+                create_prescription: 'नुस्खा तयार करा',
+                view_patients: 'सर्व रुग्ण पहा',
+                patient_records: 'रुग्ण नोंदी',
+                prescriptions: 'नुस्खे',
+                personal_info: 'वैयक्तिक माहिती',
+                health_info: 'आरोग्य माहिती',
+                medical_history: 'वैद्यकीय इतिहास',
+                government_schemes: 'सरकारी योजना',
+                medicine_stock: 'औषध स्टॉक',
+                logout: 'लॉगआउट'
+            },
+            bn: {
+                app_name: 'আপনা স্বাস্থ',
+                app_tag: 'সমন্বিত স্বাস্থ্য ব্যবস্থা',
+                language: 'ভাষা',
+                username: 'ব্যবহারকারীর নাম / আইডি',
+                password: 'পাসওয়ার্ড',
+                login_as: 'ভূমিকা নির্বাচন করুন',
+                worker: 'শ্রমিক',
+                admin: 'ডাক্তার',
+                govt: 'সরকারি কর্মকর্তা',
+                medical: 'মেডিক্যাল',
+                login_btn: 'লগইন',
+                dashboard: 'ড্যাশবোর্ড',
+                total_patients: 'মোট রোগী',
+                todays_appointments: 'আজকের অ্যাপয়েন্টমেন্ট',
+                pending_prescriptions: 'বিচারাধীন প্রেসক্রিপশন',
+                critical_cases: 'গুরুতর কেস',
+                recent_patients: 'সাম্প্রতিক রোগী',
+                quick_actions: 'দ্রুত কর্ম',
+                register_patient: 'নতুন রোগী নিবন্ধন',
+                create_prescription: 'প্রেসক্রিপশন তৈরি',
+                view_patients: 'সব রোগী দেখুন',
+                patient_records: 'রোগীর রেকর্ড',
+                prescriptions: 'প্রেসক্রিপশন',
+                personal_info: 'ব্যক্তিগত তথ্য',
+                health_info: 'স্বাস্থ্য তথ্য',
+                medical_history: 'চিকিৎসা ইতিহাস',
+                government_schemes: 'সরকারি স্কিম',
+                medicine_stock: 'ঔষধ স্টক',
+                logout: 'লগআউট'
+            },
+            ml: {
+                app_name: 'അപ്പന സ്വാസ്ഥ്യ',
+                app_tag: 'സമഗ്ര ആരോഗ്യ സംവിധാനം',
+                language: 'ഭാഷ',
+                username: 'ഉപയോക്തൃനാമം / ഐഡി',
+                password: 'പാസ്‌വേഡ്',
+                login_as: 'ഭൂമിക തിരഞ്ഞെടുക്കുക',
+                worker: 'കുടിയാൻ',
+                admin: 'ഡോക്ടർ',
+                govt: 'സർക്കാർ ഉദ്യോഗസ്ഥൻ',
+                medical: 'മെഡിക്കൽ',
+                login_btn: 'ലോഗിൻ',
+                dashboard: 'ഡാഷ്‌ബോർഡ്',
+                total_patients: 'മൊത്തം രോഗികൾ',
+                todays_appointments: 'ഇന്നത്തെ അപ്പോയിന്റ്‌മെന്റുകൾ',
+                pending_prescriptions: 'തീരാത്ത പ്രെസ്‌ക്രിപ്‌ഷനുകൾ',
+                critical_cases: 'ഗുരുതരമായ കേസുകൾ',
+                recent_patients: 'സമീപകാല രോഗികൾ',
+                quick_actions: 'ദ്രുത പ്രവർത്തനങ്ങൾ',
+                register_patient: 'പുതിയ രോഗിയെ രജിസ്റ്റർ ചെയ്യുക',
+                create_prescription: 'പ്രെസ്‌ക്രിപ്‌ഷൻ സൃഷ്ടിക്കുക',
+                view_patients: 'എല്ലാ രോഗികളും കാണുക',
+                patient_records: 'രോഗി റെക്കോർഡുകൾ',
+                prescriptions: 'പ്രെസ്‌ക്രിപ്‌ഷനുകൾ',
+                personal_info: 'വ്യക്തിഗത വിവരങ്ങൾ',
+                health_info: 'ആരോഗ്യ വിവരങ്ങൾ',
+                medical_history: 'വൈദ്യശാസ്ത്ര ചരിത്രം',
+                government_schemes: 'സർക്കാർ പദ്ധതികൾ',
+                medicine_stock: 'മരുന്ന് സ്റ്റോക്ക്',
+                logout: 'ലോഗ്‌ഔട്ട്'
+            }
+        };
+
+        function applyLang(lang) {
+            const t = I18N[lang] || I18N.en;
+            // Login page translations
+            document.getElementById('i18n-lang-label').textContent = t.language;
+            document.getElementById('i18n-app-name').textContent = t.app_name;
+            document.getElementById('i18n-app-tag').textContent = t.app_tag;
+            document.getElementById('i18n-username-label').textContent = t.username;
+            document.getElementById('i18n-password-label').textContent = t.password;
+            document.getElementById('i18n-loginas-label').textContent = t.login_as;
+            document.getElementById('i18n-role-worker').textContent = t.worker;
+            document.getElementById('i18n-role-admin').textContent = t.admin;
+            document.getElementById('i18n-role-govt').textContent = t.govt;
+            document.getElementById('i18n-role-med').textContent = t.medical;
+            document.getElementById('i18n-login-btn').textContent = t.login_btn;
+            
+            // Dashboard translations
+            const dashboardElements = document.querySelectorAll('[data-i18n]');
+            dashboardElements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+            
+            // Update logout buttons
+            document.querySelectorAll('.logout-btn').forEach(btn => {
+                btn.textContent = t.logout;
+            });
+        }
+        // Application State
+        let currentUser = null;
+        let currentUserRole = null;
+        let currentWorker = null;
+        let workers = JSON.parse(localStorage.getItem('apnaSwastaWorkers')) || [];
+        let prescriptions = JSON.parse(localStorage.getItem('apnaSwastaPrescriptions')) || [];
+        let medicines = JSON.parse(localStorage.getItem('apnaSwastaMedicines')) || [];
+        let nextWorkerId = parseInt(localStorage.getItem('nextWorkerId')) || 1001;
+
+        // Demo Login Credentials
+        const loginCredentials = {
+            'worker': { 'W1001': 'worker123', 'W1002': 'worker123', 'W1003': 'worker123' },
+            'admin': { 'doctor1': 'admin123', 'doctor2': 'admin123' },
+            'government': { 'gov1': 'gov123', 'gov2': 'gov123' },
+            'medical': { 'medical1': 'medical123', 'medical2': 'medical123' }
+        };
+
+        // Initialize the application
+        function initApp() {
+            if (currentUserRole === 'worker') {
+                updateWorkerDashboard();
+            } else if (currentUserRole === 'admin') {
+                updateAdminDashboard();
+            } else if (currentUserRole === 'government') {
+                updateGovernmentDashboard();
+            } else if (currentUserRole === 'medical') {
+                updateMedicalDashboard();
+            }
+        }
+
+        // Login Function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            
+            if (!username || !password) {
+                alert('Please enter both username/ID and password');
+                return;
+            }
+            
+            // Check credentials
+            // Open login for any credentials as requested
+            if (true) {
+                currentUser = username;
+                currentUserRole = role;
+                
+                // Hide all apps first
+                document.getElementById('workerApp').style.display = 'none';
+                document.getElementById('adminApp').style.display = 'none';
+                document.getElementById('governmentApp').style.display = 'none';
+                document.getElementById('medicalApp').style.display = 'none';
+                
+                // Show login page
+                document.getElementById('loginPage').style.display = 'none';
+                
+                // Show appropriate app based on role
+                if (role === 'worker') {
+                    // Find worker data
+                    currentWorker = workers.find(w => w.id === username);
+                    if (currentWorker) {
+                        // Fetch latest worker profile data
+                        fetchWorkerProfile(username).then(() => {
+                            document.getElementById('workerUserName').textContent = `Welcome, ${currentWorker.name}`;
+                            document.getElementById('workerApp').style.display = 'block';
+                            initApp();
+                            showWorkerPage('dashboard');
+                            // Start auto-refresh for prescriptions
+                            startPrescriptionAutoRefresh();
+                        });
+                    } else {
+                        alert('Worker ID not found in system.');
+                        document.getElementById('loginPage').style.display = 'flex';
+                    }
+                } else if (role === 'admin') {
+                    document.getElementById('adminUserName').textContent = `Welcome, Dr. ${username}`;
+                    document.getElementById('adminApp').style.display = 'block';
+                    initApp();
+                    showAdminPage('dashboard');
+                } else if (role === 'government') {
+                    document.getElementById('governmentUserName').textContent = `Welcome, ${username}`;
+                    document.getElementById('governmentApp').style.display = 'block';
+                    initApp();
+                    showGovernmentPage('dashboard');
+                } else if (role === 'medical') {
+                    document.getElementById('medicalUserName').textContent = `Welcome, ${username}`;
+                    document.getElementById('medicalApp').style.display = 'block';
+                    initApp();
+                    showMedicalPage('dashboard');
+                    // Start auto-refresh for new prescriptions
+                    startMedicalAutoRefresh();
+                }
+            } else {}
+        }
+
+        // Logout Function
+        function logout() {
+            currentUser = null;
+            currentUserRole = null;
+            currentWorker = null;
+            
+            // Hide all apps
+            document.getElementById('workerApp').style.display = 'none';
+            document.getElementById('adminApp').style.display = 'none';
+            document.getElementById('governmentApp').style.display = 'none';
+            document.getElementById('medicalApp').style.display = 'none';
+            
+            // Show login page
+            document.getElementById('loginPage').style.display = 'flex';
+            
+            // Clear form fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Worker Page Management
+        function showWorkerPage(pageName) {
+            // Hide all worker pages
+            document.querySelectorAll('#workerContent .page-content').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Show selected worker page
+            document.getElementById('worker' + pageName.charAt(0).toUpperCase() + pageName.slice(1) + 'Page').style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('#workerApp .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update page-specific data
+            if (pageName === 'dashboard') updateWorkerDashboard();
+            if (pageName === 'medical') updateWorkerMedicalPage();
+            if (pageName === 'schemes') updateWorkerSchemesPage();
+        }
+
+        // Update Worker Dashboard
+        function updateWorkerDashboard() {
+            if (!currentWorker) return;
+            
+            // Update personal information
+            const personalInfo = document.getElementById('workerPersonalInfo');
+            personalInfo.innerHTML = `
+                <div class="info-group">
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value">${currentWorker.name || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Worker ID</div>
+                    <div class="info-value">${currentWorker.worker_id || currentWorker.id}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Age</div>
+                    <div class="info-value">${currentWorker.age || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Gender</div>
+                    <div class="info-value">${currentWorker.gender || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Contact Number</div>
+                    <div class="info-value">${currentWorker.phone || currentWorker.contact || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Emergency Contact</div>
+                    <div class="info-value">${currentWorker.emergency_contact || currentWorker.emergencyContact || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Address</div>
+                    <div class="info-value">${currentWorker.address || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Blood Group</div>
+                    <div class="info-value">${currentWorker.blood_group || currentWorker.bloodGroup || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Marital Status</div>
+                    <div class="info-value">${currentWorker.marital_status || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Language</div>
+                    <div class="info-value">${currentWorker.language || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Financial Status</div>
+                    <div class="info-value">${currentWorker.financial_status || 'Not specified'}</div>
+                </div>
+            `;
+            
+            // Update health information
+            const healthInfo = document.getElementById('workerHealthInfo');
+            const bmi = currentWorker.weight && currentWorker.height ? 
+                (currentWorker.weight / ((currentWorker.height/100) * (currentWorker.height/100))).toFixed(1) : 
+                (currentWorker.bmi ? currentWorker.bmi.toFixed(1) : 'N/A');
+            
+            // BMI category
+            let bmiCategory = 'N/A';
+            if (bmi !== 'N/A') {
+                const bmiValue = parseFloat(bmi);
+                if (bmiValue < 18.5) bmiCategory = 'Underweight';
+                else if (bmiValue < 25) bmiCategory = 'Normal';
+                else if (bmiValue < 30) bmiCategory = 'Overweight';
+                else bmiCategory = 'Obese';
+            }
+                
+            healthInfo.innerHTML = `
+                <div class="info-group">
+                    <div class="info-label">Height</div>
+                    <div class="info-value">${currentWorker.height || 'N/A'} cm</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Weight</div>
+                    <div class="info-value">${currentWorker.weight || 'N/A'} kg</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">BMI</div>
+                    <div class="info-value">${bmi} (${bmiCategory})</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Blood Group</div>
+                    <div class="info-value">${currentWorker.blood_group || currentWorker.bloodGroup || 'Not specified'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Allergies</div>
+                    <div class="info-value">${currentWorker.allergies || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Medical Conditions</div>
+                    <div class="info-value">${currentWorker.conditions || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Inherited Diseases</div>
+                    <div class="info-value">${currentWorker.inherited_diseases || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Previous Treatments</div>
+                    <div class="info-value">${currentWorker.previous_treatments || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Vaccination Count</div>
+                    <div class="info-value">${currentWorker.vaccination_count || 0}</div>
+                </div>
+            `;
+            
+            // Update medical activity
+            const medicalActivity = document.getElementById('workerMedicalActivity');
+            medicalActivity.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Visit Type</th>
+                            <th>Doctor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${currentWorker.lastVisit || 'N/A'}</td>
+                            <td>General Checkup</td>
+                            <td>Dr. Sharma</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-10</td>
+                            <td>Vaccination</td>
+                            <td>Dr. Patel</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-05</td>
+                            <td>Follow-up</td>
+                            <td>Dr. Kumar</td>
+                            <td>Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Update Worker Medical Page
+        function updateWorkerMedicalPage() {
+            if (!currentWorker) return;
+            
+            // Update medical history
+            const medicalHistory = document.getElementById('workerMedicalHistory');
+            medicalHistory.innerHTML = `
+                <div class="info-group">
+                    <div class="info-label">Known Allergies</div>
+                    <div class="info-value">${currentWorker.allergies || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Chronic Conditions</div>
+                    <div class="info-value">${currentWorker.conditions || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Inherited Diseases</div>
+                    <div class="info-value">${currentWorker.inherited_diseases || currentWorker.inheritedDiseases || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Previous Treatments</div>
+                    <div class="info-value">${currentWorker.previous_treatments || 'None recorded'}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Number of Vaccinations</div>
+                    <div class="info-value">${currentWorker.vaccination_count || currentWorker.vaccinationCount || 0}</div>
+                </div>
+            `;
+            
+            // Fetch and display real-time prescriptions
+            fetchWorkerPrescriptions();
+            
+            // Update vaccination table
+            const vaccinationTable = document.getElementById('workerVaccinationTable');
+            vaccinationTable.innerHTML = `
+                <tr>
+                    <td>COVID-19 Vaccine</td>
+                    <td>2024-01-10</td>
+                    <td>Booster</td>
+                    <td>Completed</td>
+                </tr>
+                <tr>
+                    <td>Influenza Vaccine</td>
+                    <td>2023-12-15</td>
+                    <td>Seasonal</td>
+                    <td>Completed</td>
+                </tr>
+                <tr>
+                    <td>Tetanus Vaccine</td>
+                    <td>2023-11-20</td>
+                    <td>Booster</td>
+                    <td>Completed</td>
+                </tr>
+            `;
+        }
+
+        // Fetch Worker Prescriptions
+        async function fetchWorkerPrescriptions() {
+            if (!currentWorker) return;
+            
+            try {
+                const workerId = currentWorker.worker_id || currentWorker.id;
+                let workerPrescriptions = [];
+                
+                // Try to fetch from API first
+                try {
+                    const response = await fetch(`http://localhost:5004/api/workers/${workerId}/prescriptions`);
+                    if (response.ok) {
+                        workerPrescriptions = await response.json();
+                    } else {
+                        throw new Error('API not available');
+                    }
+                } catch (apiError) {
+                    console.log('API not available, using demo data');
+                    // Fallback to demo data from localStorage
+                    workerPrescriptions = prescriptions.filter(p => p.patientId === workerId || p.worker_id === workerId);
+                }
+                
+                const prescriptionsDiv = document.getElementById('workerPrescriptions');
+                
+                if (workerPrescriptions.length === 0) {
+                    prescriptionsDiv.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No prescriptions found.</p>';
+                } else {
+                    let prescriptionsHTML = '';
+                    workerPrescriptions.forEach(prescription => {
+                        const medicines = Array.isArray(prescription.medicines) ? 
+                            prescription.medicines.map(med => `${med.name} (${med.dosage})`).join(', ') :
+                            prescription.medicines || 'Not specified';
+                            
+                        prescriptionsHTML += `
+                            <div style="border: 1px solid #eee; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; background: #f9f9f9;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h4 style="margin: 0; color: #2c3e50;">Prescription #${prescription.prescription_id || prescription.id || 'N/A'}</h4>
+                                    <span style="background: #1a73e8; color: white; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem;">
+                                        ${prescription.status || 'Active'}
+                                    </span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <strong>Date:</strong> ${prescription.date || 'Not specified'}
+                                    </div>
+                                    <div>
+                                        <strong>Doctor:</strong> ${prescription.doctor?.name || prescription.doctor || 'Not specified'}
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Diagnosis:</strong> ${prescription.diagnosis || 'Not specified'}
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Medicines:</strong> ${medicines}
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Instructions:</strong> ${prescription.instructions || 'None provided'}
+                                </div>
+                                <div>
+                                    <strong>Doctor Feedback:</strong> ${prescription.feedback || 'No feedback provided'}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    prescriptionsDiv.innerHTML = prescriptionsHTML;
+                }
+            } catch (error) {
+                console.error('Error fetching prescriptions:', error);
+                const prescriptionsDiv = document.getElementById('workerPrescriptions');
+                prescriptionsDiv.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 2rem;">Error loading prescriptions. Please try again later.</p>';
+            }
+        }
+
+        // Auto-refresh prescriptions every 30 seconds
+        function startPrescriptionAutoRefresh() {
+            if (currentUserRole === 'worker') {
+                setInterval(() => {
+                    if (document.getElementById('workerMedicalPage').style.display !== 'none') {
+                        fetchWorkerPrescriptions();
+                    }
+                }, 30000); // Refresh every 30 seconds
+            }
+        }
+
+        // Fetch worker profile data from API
+        async function fetchWorkerProfile(workerId) {
+            try {
+                const response = await fetch(`http://localhost:5004/api/workers/${workerId}/profile`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.worker) {
+                        currentWorker = { ...currentWorker, ...data.worker };
+                        // Update the worker in the workers array
+                        const workerIndex = workers.findIndex(w => w.id === workerId);
+                        if (workerIndex !== -1) {
+                            workers[workerIndex] = { ...workers[workerIndex], ...data.worker };
+                        }
+                        return data.worker;
+                    }
+                } else {
+                    throw new Error('API not available');
+                }
+            } catch (error) {
+                console.log('API not available, using existing worker data');
+                // Use existing worker data from localStorage
+                return currentWorker;
+            }
+            return null;
+        }
+
+        // Fetch new prescriptions for medical portal
+        async function fetchNewPrescriptions() {
+            try {
+                let newPrescriptions = [];
+                
+                // Try to fetch from API first
+                try {
+                    const response = await fetch('http://localhost:5004/api/pharmacy/new-prescriptions');
+                    if (response.ok) {
+                        newPrescriptions = await response.json();
+                    } else {
+                        throw new Error('API not available');
+                    }
+                } catch (apiError) {
+                    console.log('API not available, using demo data');
+                    // Fallback to demo data from localStorage
+                    const today = new Date().toISOString().split('T')[0];
+                    newPrescriptions = prescriptions.filter(p => p.date === today || p.status === 'pending');
+                }
+                
+                document.getElementById('newPrescriptionsCount').textContent = newPrescriptions.length;
+                
+                const newPrescriptionsList = document.getElementById('newPrescriptionsList');
+                
+                if (newPrescriptions.length === 0) {
+                    newPrescriptionsList.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No new prescriptions in the last 24 hours.</p>';
+                } else {
+                    let prescriptionsHTML = '';
+                    newPrescriptions.forEach(prescription => {
+                        const medicines = Array.isArray(prescription.medicines) ? 
+                            prescription.medicines.map(med => `${med.name} (${med.dosage})`).join(', ') :
+                            prescription.medicines || 'Not specified';
+                            
+                        prescriptionsHTML += `
+                            <div style="border: 1px solid #1a73e8; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; background: #f0f8ff;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h4 style="margin: 0; color: #1a73e8;">NEW: Prescription #${prescription.prescription_id || prescription.id || 'N/A'}</h4>
+                                    <span style="background: #1a73e8; color: white; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem;">
+                                        ${prescription.status || 'Active'}
+                                    </span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <strong>Worker ID:</strong> ${prescription.worker_id || prescription.patientId || 'N/A'}
+                                    </div>
+                                    <div>
+                                        <strong>Date:</strong> ${prescription.date || 'Not specified'}
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Diagnosis:</strong> ${prescription.diagnosis || 'Not specified'}
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Medicines:</strong> ${medicines}
+                                </div>
+                                <div>
+                                    <strong>Instructions:</strong> ${prescription.instructions || 'None provided'}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    newPrescriptionsList.innerHTML = prescriptionsHTML;
+                }
+            } catch (error) {
+                console.error('Error fetching new prescriptions:', error);
+                const newPrescriptionsList = document.getElementById('newPrescriptionsList');
+                newPrescriptionsList.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 2rem;">Error loading new prescriptions. Please try again later.</p>';
+            }
+        }
+
+        // Auto-refresh medical portal every 30 seconds
+        function startMedicalAutoRefresh() {
+            if (currentUserRole === 'medical') {
+                setInterval(() => {
+                    if (document.getElementById('medicalDashboardPage').style.display !== 'none') {
+                        fetchNewPrescriptions();
+                    }
+                }, 30000); // Refresh every 30 seconds
+            }
+        }
+
+        // Update Worker Schemes Page
+        function updateWorkerSchemesPage() {
+            const schemesDiv = document.getElementById('workerSchemes');
+            schemesDiv.innerHTML = `
+                <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4>Ayushman Bharat Scheme</h4>
+                    <p>Health insurance coverage of ₹5 lakh per family per year for secondary and tertiary care hospitalization.</p>
+                    <p><strong>Eligibility:</strong> All workers registered in the system</p>
+                    <p><strong>Benefits:</strong> Free treatment at empaneled hospitals</p>
+                </div>
+                <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4>Pradhan Mantri Jan Arogya Yojana</h4>
+                    <p>Cashless treatment for serious illnesses requiring hospitalization.</p>
+                    <p><strong>Eligibility:</strong> Workers with annual income below ₹5 lakh</p>
+                    <p><strong>Benefits:</strong> Coverage for 1,393 medical procedures</p>
+                </div>
+                <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4>Employee State Insurance Scheme</h4>
+                    <p>Social security and health insurance scheme for workers.</p>
+                    <p><strong>Eligibility:</strong> All registered workers</p>
+                    <p><strong>Benefits:</strong> Medical care, cash benefits, maternity benefits</p>
+                </div>
+            `;
+        }
+
+        // Admin Page Management
+        function showAdminPage(pageName) {
+            // Hide all admin pages
+            document.querySelectorAll('#adminContent .page-content').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Show selected admin page
+            document.getElementById('admin' + pageName.charAt(0).toUpperCase() + pageName.slice(1) + 'Page').style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('#adminApp .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update page-specific data
+            if (pageName === 'dashboard') updateAdminDashboard();
+            if (pageName === 'patients') updateAdminPatientsPage();
+            if (pageName === 'prescriptions') updateAdminPrescriptionsPage();
+        }
+
+        // Update Admin Dashboard
+        function updateAdminDashboard() {
+            document.getElementById('totalPatients').textContent = workers.length;
+            document.getElementById('todaysAppointments').textContent = workers.filter(w => w.lastVisit === new Date().toISOString().split('T')[0]).length;
+            document.getElementById('pendingPrescriptions').textContent = prescriptions.filter(p => p.status === 'pending').length;
+            document.getElementById('criticalCases').textContent = workers.filter(w => w.healthStatus === 'Critical').length;
+            
+            // Update recent patients list
+            const recentPatientsList = document.getElementById('recentPatientsList');
+            const recentPatients = workers.slice(-5).reverse();
+            
+            if (recentPatients.length === 0) {
+                recentPatientsList.innerHTML = '<p>No patients registered yet.</p>';
+            } else {
+                let patientsHTML = '';
+                recentPatients.forEach(patient => {
+                    patientsHTML += `
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #eee;">
+                            <div>
+                                <strong>${patient.name}</strong> (${patient.id})
+                            </div>
+                            <div>
+                                <span class="health-status ${patient.healthStatus === 'Healthy' ? 'status-healthy' : patient.healthStatus === 'Pending' ? 'status-pending' : 'status-critical'}">
+                                    ${patient.healthStatus}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                recentPatientsList.innerHTML = patientsHTML;
+            }
+        }
+
+        // Update Admin Patients Page
+        function updateAdminPatientsPage() {
+            const patientsTableBody = document.getElementById('patientsTableBody');
+            patientsTableBody.innerHTML = '';
+            
+            if (workers.length === 0) {
+                patientsTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No patients registered yet.</td></tr>';
+                return;
+            }
+            
+            workers.forEach(worker => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${worker.id}</td>
+                    <td>${worker.name}</td>
+                    <td>${worker.age}</td>
+                    <td>${worker.lastVisit || 'No visits'}</td>
+                    <td>
+                        <span class="health-status ${worker.healthStatus === 'Healthy' ? 'status-healthy' : worker.healthStatus === 'Pending' ? 'status-pending' : 'status-critical'}">
+                            ${worker.healthStatus}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" onclick="viewPatient('${worker.id}')">View</button>
+                        <button class="btn btn-secondary" onclick="editPatient('${worker.id}')">Edit</button>
+                    </td>
+                `;
+                patientsTableBody.appendChild(row);
+            });
+        }
+
+        // Update Admin Prescriptions Page
+        function updateAdminPrescriptionsPage() {
+            const patientSelect = document.getElementById('prescriptionPatient');
+            patientSelect.innerHTML = '<option value="">Select Patient</option>';
+            
+            workers.forEach(worker => {
+                const option = document.createElement('option');
+                option.value = worker.id;
+                option.textContent = `${worker.name} (${worker.id})`;
+                patientSelect.appendChild(option);
+            });
+            
+            // Set today's date as default
+            document.getElementById('prescriptionDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('prescriptionDoctor').value = `Dr. ${currentUser}`;
+        }
+
+        // Government Page Management
+        function showGovernmentPage(pageName) {
+            // Hide all government pages
+            document.querySelectorAll('#governmentContent .page-content').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Show selected government page
+            document.getElementById('government' + pageName.charAt(0).toUpperCase() + pageName.slice(1) + 'Page').style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('#governmentApp .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update page-specific data
+            if (pageName === 'dashboard') updateGovernmentDashboard();
+        }
+
+        // Update Government Dashboard
+        function updateGovernmentDashboard() {
+            document.getElementById('totalRegistrations').textContent = workers.length;
+            document.getElementById('workerVaccinations').textContent = workers.filter(w => w.vaccinationCount > 0).length;
+            document.getElementById('doctorVaccinations').textContent = 25; // Placeholder
+            document.getElementById('specializedDoctors').textContent = 15; // Placeholder
+            
+            // Update regional stats
+            const regionalStats = document.getElementById('regionalStats');
+            regionalStats.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>Registrations</th>
+                            <th>Vaccination %</th>
+                            <th>Health Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>North Zone</td>
+                            <td>${Math.floor(workers.length * 0.3)}</td>
+                            <td>72%</td>
+                            <td>Good</td>
+                        </tr>
+                        <tr>
+                            <td>South Zone</td>
+                            <td>${Math.floor(workers.length * 0.25)}</td>
+                            <td>68%</td>
+                            <td>Fair</td>
+                        </tr>
+                        <tr>
+                            <td>East Zone</td>
+                            <td>${Math.floor(workers.length * 0.2)}</td>
+                            <td>65%</td>
+                            <td>Fair</td>
+                        </tr>
+                        <tr>
+                            <td>West Zone</td>
+                            <td>${Math.floor(workers.length * 0.25)}</td>
+                            <td>75%</td>
+                            <td>Good</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            // Update government updates
+            const governmentUpdates = document.getElementById('governmentUpdates');
+            governmentUpdates.innerHTML = `
+                <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4>New Vaccine Approved</h4>
+                    <p>The government has approved a new malaria vaccine for widespread use.</p>
+                    <p><strong>Date:</strong> 2024-01-20</p>
+                </div>
+                <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4>Healthcare Scheme Expansion</h4>
+                    <p>Ayushman Bharat scheme extended to cover additional 10 million families.</p>
+                    <p><strong>Date:</strong> 2024-01-15</p>
+                </div>
+            `;
+        }
+
+        // Medical Page Management
+        function showMedicalPage(pageName) {
+            // Hide all medical pages
+            document.querySelectorAll('#medicalContent .page-content').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Show selected medical page
+            document.getElementById('medical' + pageName.charAt(0).toUpperCase() + pageName.slice(1) + 'Page').style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('#medicalApp .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update page-specific data
+            if (pageName === 'dashboard') updateMedicalDashboard();
+            if (pageName === 'stock') updateMedicalStockPage();
+            if (pageName === 'prescriptions') updateMedicalPrescriptionsPage();
+        }
+
+        // Update Medical Dashboard
+        function updateMedicalDashboard() {
+            document.getElementById('totalMedicines').textContent = medicines.length;
+            document.getElementById('expiredMedicines').textContent = medicines.filter(m => new Date(m.expiry) < new Date()).length;
+            document.getElementById('medicalPendingPrescriptions').textContent = prescriptions.filter(p => p.status === 'pending').length;
+            
+            // Fetch and display new prescriptions
+            fetchNewPrescriptions();
+            
+            // Update recent prescriptions
+            const recentPrescriptions = document.getElementById('recentPrescriptions');
+            const recentPrescriptionsList = prescriptions.slice(-3).reverse();
+            
+            if (recentPrescriptionsList.length === 0) {
+                recentPrescriptions.innerHTML = '<p>No prescriptions found.</p>';
+            } else {
+                let prescriptionsHTML = '';
+                recentPrescriptionsList.forEach(prescription => {
+                    const patient = workers.find(w => w.id === prescription.patientId);
+                    prescriptionsHTML += `
+                        <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                            <h4>Prescription for ${patient ? patient.name : 'Unknown Patient'}</h4>
+                            <p><strong>Date:</strong> ${prescription.date}</p>
+                            <p><strong>Doctor:</strong> ${prescription.doctor}</p>
+                            <p><strong>Status:</strong> ${prescription.status}</p>
+                        </div>
+                    `;
+                });
+                recentPrescriptions.innerHTML = prescriptionsHTML;
+            }
+            
+            // Update stock alerts
+            const stockAlerts = document.getElementById('stockAlerts');
+            const lowStock = medicines.filter(m => m.stock < 10);
+            const expired = medicines.filter(m => new Date(m.expiry) < new Date());
+            
+            if (lowStock.length === 0 && expired.length === 0) {
+                stockAlerts.innerHTML = '<p>No stock alerts at this time.</p>';
+            } else {
+                let alertsHTML = '';
+                if (lowStock.length > 0) {
+                    alertsHTML += '<h4>Low Stock Items</h4>';
+                    lowStock.forEach(medicine => {
+                        alertsHTML += `<p>${medicine.name} - Only ${medicine.stock} left</p>`;
+                    });
+                }
+                if (expired.length > 0) {
+                    alertsHTML += '<h4>Expired Items</h4>';
+                    expired.forEach(medicine => {
+                        alertsHTML += `<p>${medicine.name} - Expired on ${medicine.expiry}</p>`;
+                    });
+                }
+                stockAlerts.innerHTML = alertsHTML;
+            }
+        }
+
+        // Update Medical Stock Page
+        function updateMedicalStockPage() {
+            const medicineStockTable = document.getElementById('medicineStockTable');
+            medicineStockTable.innerHTML = '';
+            
+            if (medicines.length === 0) {
+                medicineStockTable.innerHTML = '<tr><td colspan="5" style="text-align: center;">No medicines in stock.</td></tr>';
+                return;
+            }
+            
+            medicines.forEach(medicine => {
+                const row = document.createElement('tr');
+                const isExpired = new Date(medicine.expiry) < new Date();
+                const isLowStock = medicine.stock < 10;
+                
+                let status = 'Normal';
+                if (isExpired) status = 'Expired';
+                else if (isLowStock) status = 'Low Stock';
+                
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td>${medicine.category}</td>
+                    <td>${medicine.stock}</td>
+                    <td>${medicine.expiry}</td>
+                    <td>${status}</td>
+                `;
+                medicineStockTable.appendChild(row);
+            });
+        }
+
+        // Update Medical Prescriptions Page
+        function updateMedicalPrescriptionsPage() {
+            const doctorPrescriptions = document.getElementById('doctorPrescriptions');
+            
+            if (prescriptions.length === 0) {
+                doctorPrescriptions.innerHTML = '<p>No prescriptions found.</p>';
+                return;
+            }
+            
+            let prescriptionsHTML = '';
+            prescriptions.forEach(prescription => {
+                const patient = workers.find(w => w.id === prescription.patientId);
+                prescriptionsHTML += `
+                    <div style="border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                        <h4>Prescription for ${patient ? patient.name : 'Unknown Patient'} (${prescription.patientId})</h4>
+                        <p><strong>Date:</strong> ${prescription.date}</p>
+                        <p><strong>Doctor:</strong> ${prescription.doctor}</p>
+                        <p><strong>Diagnosis:</strong> ${prescription.diagnosis}</p>
+                        <p><strong>Medicines:</strong> ${prescription.medicines}</p>
+                        <p><strong>Status:</strong> ${prescription.status}</p>
+                        ${prescription.status === 'pending' ? 
+                            `<button class="btn btn-primary" onclick="dispensePrescription('${prescription.id}')">Dispense</button>` : 
+                            '<span style="color: green;">Dispensed</span>'}
+                    </div>
+                `;
+            });
+            doctorPrescriptions.innerHTML = prescriptionsHTML;
+        }
+
+        // ========== Doctor/Admin: Register Patient -> Flask Backend ==========
+        // Camera + Registration wiring
+const API_BASE = (function() {
+    try {
+        const saved = localStorage.getItem('apna_api');
+        if (saved) return saved;
+    } catch (_) {}
+    const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
+    return isLocal ? 'http://localhost:5003' : `${location.protocol}//${location.hostname}:5003`;
+})();
+
+let adminMediaStream = null;
+let latestCapturedFace = null;
+
+async function startAdminCam() {
+    const videoEl = document.getElementById('adminCam');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Camera not supported in this browser.');
+        return;
+    }
+    try {
+        adminMediaStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' },
+            audio: false
+        });
+        videoEl.srcObject = adminMediaStream;
+        await videoEl.play();
+    } catch (err) {
+        alert('Unable to access camera: ' + (err?.message || err));
+    }
+}
+
+function stopAdminCam() {
+    const videoEl = document.getElementById('adminCam');
+    try {
+        if (adminMediaStream) {
+            adminMediaStream.getTracks().forEach(t => t.stop());
+        }
+    } catch (_) {}
+    adminMediaStream = null;
+    if (videoEl) {
+        try { videoEl.pause(); } catch (_) {}
+        videoEl.srcObject = null;
+    }
+}
+
+function captureAdminPhoto() {
+    const videoEl = document.getElementById('adminCam');
+    if (!videoEl) return null;
+    const w = videoEl.videoWidth || 360;
+    const h = videoEl.videoHeight || 240;
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoEl, 0, 0, w, h);
+    const dataUrl = canvas.toDataURL('image/png');
+    latestCapturedFace = dataUrl;
+    const preview = document.getElementById('adminFacePreview');
+    if (preview) preview.src = dataUrl;
+    return dataUrl;
+}
+
+// Hook buttons (if present on current page)
+window.addEventListener('load', function() {
+    const btnStart = document.getElementById('adminStartCam');
+    const btnStop = document.getElementById('adminStopCam');
+    const btnCapture = document.getElementById('adminCapture');
+    if (btnStart) btnStart.addEventListener('click', startAdminCam);
+    if (btnStop) btnStop.addEventListener('click', stopAdminCam);
+    if (btnCapture) btnCapture.addEventListener('click', captureAdminPhoto);
+
+    const regForm = document.getElementById('patientRegistrationForm');
+    if (regForm) regForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fullName = document.getElementById('patientName').value.trim();
+        const age = Number(document.getElementById('patientAge').value || 0);
+        const gender = document.getElementById('patientGender').value;
+        const phone = document.getElementById('patientContact').value.trim();
+        const address = (document.getElementById('patientAddress').value || '').trim();
+        const nativeState = '';
+        const bloodGroup = (document.getElementById('patientBlood').value || '').trim();
+        const maritalStatus = '';
+        const language = 'en';
+        const financialStatus = '';
+        const allergies = (document.getElementById('patientAllergies').value || '').trim();
+        const conditions = (document.getElementById('patientConditions').value || '').trim();
+        const inheritedDiseases = (document.getElementById('patientInherited').value || '').trim();
+        const previousTreatments = (document.getElementById('patientPreviousTreatments').value || '').trim();
+        const vaccinationCount = Number(document.getElementById('patientVaccinationCount').value || 0);
+
+        // Generate a simple healthId if not provided elsewhere
+        let nextId = parseInt(localStorage.getItem('nextWorkerId') || '1004', 10) || 1004;
+        const healthId = 'W' + nextId.toString();
+
+        const payload = {
+            healthId,
+            fullName,
+            age,
+            gender,
+            phone,
+            address,
+            nativeState,
+            bloodGroup,
+            maritalStatus,
+            language,
+            financialStatus,
+            allergies,
+            conditions,
+            inheritedDiseases,
+            previousTreatments,
+            vaccinationCount,
+            faceImage: latestCapturedFace || null
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/api/workers`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Registration failed');
+
+            // Persist demo list and bump id for front-end tables
+            try {
+                const existing = JSON.parse(localStorage.getItem('apnaSwastaWorkers') || '[]');
+                existing.push({ id: healthId, name: fullName, age, lastVisit: new Date().toISOString().split('T')[0], healthStatus: 'Pending' });
+                localStorage.setItem('apnaSwastaWorkers', JSON.stringify(existing));
+                localStorage.setItem('nextWorkerId', String(nextId + 1));
+                workers = existing;
+            } catch (_) {}
+
+            document.getElementById('adminRegResult').style.display = 'block';
+            document.getElementById('adminRegMsg').textContent = `Created ${healthId}`;
+            document.getElementById('adminRegQr').src = data.qrUrl;
+            const faceImg = document.getElementById('adminRegFace');
+            if (data.faceUrl) { faceImg.src = data.faceUrl; faceImg.style.display = 'block'; }
+            else { faceImg.style.display = 'none'; }
+
+            stopAdminCam();
+        } catch (err) {
+            alert('Registration failed: ' + (err?.message || err));
+        }
+    });
+});
+
+        // ========== View/Edit Patient Modal (uses backend) ==========
+let currentEditId = null;
+
+async function openPatientModal(id, mode) {
+    currentEditId = id;
+    document.getElementById('patientModalOverlay').style.display = 'flex';
+    document.getElementById('patientModalTitle').textContent =
+        mode === 'edit' ? `Edit Patient (${id})` : `Patient (${id})`;
+    document.getElementById('patientEditForm').style.display = mode === 'edit' ? 'block' : 'none';
+    document.getElementById('patientViewSection').style.display = 'block';
+
+    try {
+        const res = await fetch(`${API_BASE}/api/workers/${id}`);
+        const row = await res.json();
+        if (!res.ok) throw new Error(row.error || 'Not found');
+
+        document.getElementById('patientViewQr').src = `${API_BASE}/api/workers/${id}/qr.png`;
+        document.getElementById('patientViewFace').src = `${API_BASE}/api/workers/${id}/face.png`;
+        document.getElementById('patientViewDetails').innerHTML = `
+            <div><b>Name:</b> ${row.full_name || ''}</div>
+            <div><b>Gender:</b> ${row.gender || ''}</div>
+            <div><b>Age:</b> ${row.age || ''}</div>
+            <div><b>Phone:</b> ${row.phone || ''}</div>
+            <div><b>Address:</b> ${row.address || ''}</div>
+            <div><b>Origin:</b> ${row.native_state || ''}</div>
+            <div><b>Blood Group:</b> ${row.blood_group || ''}</div>
+            <div><b>Marital Status:</b> ${row.marital_status || ''}</div>
+            <div><b>Language:</b> ${row.language || ''}</div>
+            <div><b>Financial Status:</b> ${row.financial_status || ''}</div>
+            <div><b>Registered:</b> ${row.registration_date || ''}</div>
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                <h4>Medical History</h4>
+                <div><b>Allergies:</b> ${row.allergies || 'None recorded'}</div>
+                <div><b>Chronic Conditions:</b> ${row.conditions || 'None recorded'}</div>
+                <div><b>Inherited Diseases:</b> ${row.inherited_diseases || 'None recorded'}</div>
+                <div><b>Previous Treatments:</b> ${row.previous_treatments || 'None recorded'}</div>
+                <div><b>Vaccination Count:</b> ${row.vaccination_count || 0}</div>
+                <div><b>Last Visit:</b> ${row.last_visit || 'No visits recorded'}</div>
+            </div>
+        `;
+
+        if (mode === 'edit') {
+            document.getElementById('editFullName').value = row.full_name || '';
+            document.getElementById('editAge').value = row.age || '';
+            document.getElementById('editGender').value = row.gender || 'Male';
+            document.getElementById('editPhone').value = row.phone || '';
+            document.getElementById('editAddress').value = row.address || '';
+            document.getElementById('editNative').value = row.native_state || '';
+            document.getElementById('editBlood').value = row.blood_group || '';
+            document.getElementById('editMarital').value = row.marital_status || '';
+            document.getElementById('editLanguage').value = row.language || '';
+            document.getElementById('editFinancial').value = row.financial_status || '';
+        }
+    } catch (e) {
+        alert('Load failed: ' + (e?.message || e));
+    }
+}
+
+
+        function viewPatient(id) { openPatientModal(id, 'view'); }
+        function editPatient(id) { openPatientModal(id, 'edit'); }
+        function closePatientModal() { document.getElementById('patientModalOverlay').style.display = 'none'; }
+
+        document.getElementById('patientEditForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentEditId) return;
+            const payload = {
+                healthId: currentEditId,
+                fullName: document.getElementById('editFullName').value,
+                age: Number(document.getElementById('editAge').value || 0),
+                gender: document.getElementById('editGender').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                nativeState: document.getElementById('editNative').value,
+                bloodGroup: document.getElementById('editBlood').value,
+                maritalStatus: document.getElementById('editMarital').value,
+                language: document.getElementById('editLanguage').value,
+                financialStatus: document.getElementById('editFinancial').value,
+                faceImage: null
+            };
+            try {
+                const res = await fetch(`${API_BASE}/api/workers`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed');
+                alert('Record updated successfully.');
+                closePatientModal();
+                updateAdminPatientsPage();
+            } catch (e2) { alert('Update failed: ' + (e2?.message || e2)); }
+        });
+
+        // Sidebar Management
+        function toggleSidebar(role) {
+            const sidebar = document.querySelector(`#${role}App .sidebar`);
+            const sidebarOverlay = document.querySelector(`#${role}App .sidebar-overlay`);
+            const mainContent = document.getElementById(`${role}Content`);
+            
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-open');
+        }
+
+        // Demo data initialization
+        window.addEventListener('load', function() {
+            console.log('Apna Swasta System Loaded');
+            // Initialize language
+            const saved = localStorage.getItem('apna_lang') || 'en';
+            const sel = document.getElementById('langSelect');
+            sel.value = saved;
+            applyLang(saved);
+            sel.addEventListener('change', (e) => {
+                const val = e.target.value;
+                localStorage.setItem('apna_lang', val);
+                applyLang(val);
+            });
+            
+            // Add demo workers if none exists
+            if (workers.length === 0) {
+                const demoWorkers = [
+                    {
+                        id: 'W1001',
+                        name: 'Rahul Kumar',
+                        age: 32,
+                        gender: 'Male',
+                        contact: '9876543210',
+                        address: '123 Worker Colony, Delhi',
+                        emergencyContact: '9876543211',
+                        height: 172,
+                        weight: 68,
+                        bloodGroup: 'B+',
+                        allergies: 'Dust',
+                        conditions: 'None',
+                        inheritedDiseases: 'None',
+                        healthStatus: 'Healthy',
+                        lastVisit: '2024-01-18',
+                        tokens: 5,
+                        vaccinationCount: 3,
+                        antibiotics: 'Amoxicillin (2023-12-10)',
+                        bmi: 23.0
+                    },
+                    {
+                        id: 'W1002',
+                        name: 'Priya Singh',
+                        age: 28,
+                        gender: 'Female',
+                        contact: '9876543212',
+                        address: '456 Labor Nagar, Mumbai',
+                        emergencyContact: '9876543213',
+                        height: 160,
+                        weight: 55,
+                        bloodGroup: 'A+',
+                        allergies: 'None',
+                        conditions: 'Asthma',
+                        inheritedDiseases: 'Diabetes',
+                        healthStatus: 'Pending',
+                        lastVisit: '2024-01-17',
+                        tokens: 3,
+                        vaccinationCount: 2,
+                        antibiotics: 'None',
+                        bmi: 21.5
+                    },
+                    {
+                        id: 'W1003',
+                        name: 'Amit Sharma',
+                        age: 35,
+                        gender: 'Male',
+                        contact: '9876543214',
+                        address: '789 Worker Camp, Kolkata',
+                        emergencyContact: '9876543215',
+                        height: 175,
+                        weight: 72,
+                        bloodGroup: 'O+',
+                        allergies: 'Penicillin',
+                        conditions: 'Hypertension',
+                        inheritedDiseases: 'Heart Disease',
+                        healthStatus: 'Critical',
+                        lastVisit: '2024-01-16',
+                        tokens: 1,
+                        vaccinationCount: 1,
+                        antibiotics: 'Ciprofloxacin (2024-01-10)',
+                        bmi: 23.5
+                    }
+                ];
+                
+                workers = demoWorkers;
+                localStorage.setItem('apnaSwastaWorkers', JSON.stringify(workers));
+                localStorage.setItem('nextWorkerId', '1004');
+                nextWorkerId = 1004;
+            }
+            
+            // Add demo prescriptions if none exists
+            if (prescriptions.length === 0) {
+                const demoPrescriptions = [
+                    {
+                        id: 'P1',
+                        patientId: 'W1001',
+                        worker_id: 'W1001',
+                        prescription_id: 'RX-001',  
+                        date: '2024-01-18',
+                        doctor: 'Dr. Sharma',
+                        diagnosis: 'Common cold with mild fever',
+                        medicines: 'Paracetamol 500mg - 1 tablet every 6 hours for 3 days',
+                        instructions: 'Take rest and drink plenty of fluids',
+                        followup: '2024-01-25',
+                        status: 'dispensed',
+                        feedback: 'Patient should improve within 2-3 days'
+                    },
+                    {
+                        id: 'P2',
+                        patientId: 'W1002',
+                        worker_id: 'W1002',
+                        prescription_id: 'RX-002',
+                        date: '2024-01-17',
+                        doctor: 'Dr. Patel',
+                        diagnosis: 'Asthma exacerbation',
+                        medicines: 'Salbutamol inhaler - 2 puffs as needed',
+                        instructions: 'Avoid dust and pollution',
+                        followup: '2024-01-24',
+                        status: 'pending',
+                        feedback: 'Condition stable with current medication'
+                    },
+                    {
+                        id: 'P3',
+                        patientId: 'W1003',
+                        worker_id: 'W1003',
+                        prescription_id: 'RX-003',
+                        date: '2024-01-16',
+                        doctor: 'Dr. Singh',
+                        diagnosis: 'Hypertension management',
+                        medicines: 'Amlodipine 5mg - 1 tablet daily',
+                        instructions: 'Monitor blood pressure regularly',
+                        followup: '2024-01-23',
+                        status: 'pending',
+                        feedback: 'Continue current medication'
+                    },
+                    {
+                        id: 'P4',
+                        patientId: 'W1001',
+                        worker_id: 'W1001',
+                        prescription_id: 'RX-004',
+                        date: new Date().toISOString().split('T')[0],
+                        doctor: 'Dr. Kumar',
+                        diagnosis: 'Vitamin D deficiency',
+                        medicines: 'Vitamin D3 60,000 IU - 1 capsule weekly for 8 weeks',
+                        instructions: 'Take with fatty meal for better absorption',
+                        followup: '2024-02-15',
+                        status: 'active',
+                        feedback: 'Regular sun exposure recommended'
+                    },
+                    {
+                        id: 'P5',
+                        patientId: 'W1002',
+                        worker_id: 'W1002',
+                        prescription_id: 'RX-005',
+                        date: new Date().toISOString().split('T')[0],
+                        doctor: 'Dr. Verma',
+                        diagnosis: 'Iron deficiency anemia',
+                        medicines: 'Ferrous sulfate 325mg - 1 tablet twice daily',
+                        instructions: 'Take on empty stomach with orange juice',
+                        followup: '2024-02-10',
+                        status: 'active',
+                        feedback: 'Include iron-rich foods in diet'
+                    }
+                ];
+                
+                prescriptions = demoPrescriptions;
+                localStorage.setItem('apnaSwastaPrescriptions', JSON.stringify(prescriptions));
+            }
+            
+            // Add demo medicines if none exists
+            if (medicines.length === 0) {
+                const demoMedicines = [
+                    { name: 'Paracetamol', category: 'Pain Relief', stock: 150, expiry: '2025-06-30' },
+                    { name: 'Amoxicillin', category: 'Antibiotic', stock: 75, expiry: '2024-08-15' },
+                    { name: 'Salbutamol Inhaler', category: 'Respiratory', stock: 30, expiry: '2024-11-20' },
+                    { name: 'Insulin', category: 'Diabetes', stock: 5, expiry: '2024-03-10' },
+                    { name: 'Aspirin', category: 'Cardiac', stock: 100, expiry: '2025-01-15' }
+                ];
+                
+                medicines = demoMedicines;
+                localStorage.setItem('apnaSwastaMedicines', JSON.stringify(medicines));
+            }
+            
+            console.log('Demo data loaded successfully');
+        });
+    </script>
+</body>
+</html>
