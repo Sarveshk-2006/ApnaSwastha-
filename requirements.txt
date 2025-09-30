@@ -1,0 +1,10 @@
+Flask==3.0.3
+flask-cors==4.0.0
+python-dotenv==1.0.1
+qrcode==7.4.2
+Pillow==10.4.0
+opencv-python==4.10.0.84
+requests==2.32.3
+pyserial==3.5
+SQLAlchemy==2.0.35
+PyMySQL==1.1.1
